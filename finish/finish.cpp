@@ -37,7 +37,7 @@ void display()
     glLoadIdentity();
     glRasterPos2f(0.10f, 0.55f); // Set text position
     
-    const char* text1 = "wroted after glFlush(),so nothing drawed";
+    const char* text1 = "wroted after glFinish(),so nothing drawed";
     
     for (const char* c = text1; *c; ++c) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c); // Render each character
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
     glutInit(&argc, argv); 
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB); 
     glutInitWindowSize(1000, 880); 
-    glutCreateWindow("glFlush"); 
+    glutCreateWindow("glFinish"); 
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f); 
     glutDisplayFunc(display); 
     glutMainLoop(); 
