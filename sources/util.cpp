@@ -1,21 +1,4 @@
-/*
 
-        Copyright 2014 Etay Meiri
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
 
 #include <iostream>
 #include <fstream>
@@ -158,21 +141,6 @@ void WriteBinaryFile(const char* pFilename, const void* pData, int size)
 
     fclose(f);
 
-    /*    int f = open(pFilename, O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-
-    if (f == -1) {
-        OGLDEV_ERROR("Error opening '%s': %s\n", pFilename, strerror(errno));
-        exit(0);
-    }
-
-    int write_len = write(f, pData, size);
-    printf("%d\n", write_len);
-    if (write_len != size) {
-        OGLDEV_ERROR("Error write file: %s\n", strerror(errno));
-        exit(0);
-    }
-
-    close(f);*/
 }
 
 

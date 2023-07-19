@@ -1,57 +1,256 @@
 #include <GL/glut.h> // Include the GLUT header file
+#include <GLES2/gl2.h>
+
 
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT); // Clear color buffer
-     
-    glBegin(GL_TRIANGLES);
-    glColor4f(1.0f, 0.0f, 0.0f, 0.1f);
-    glVertex2f(-1.0, -0.5); 
-    glVertex2f(0.0, -0.5);
-    glVertex2f(-0.5, 0.5);
-    glEnd();
 
+    // texts
+    // first text
+    glColor3f(0.0f, 0.0f, 0.0f); 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1, 1, -1, 1, -1, 1); // Set orthographic projection
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRasterPos2f(-0.85f, 0.92f); // Set text position
+    
+    const char* text = "glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)";
+    
+    for (const char* c = text; *c; ++c) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c); // Render each character
+    }
+    // second text
+    glColor3f(0.0f, 0.0f, 0.0f); 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1, 1, -1, 1, -1, 1); // Set orthographic projection
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRasterPos2f(0.15f, 0.92f); // Set text position
+    
+    const char* text1 = "glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR)";
+    
+    for (const char* c = text1; *c; ++c) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c); // Render each character
+    }   
+    // third text
+    glColor3f(0.0f, 0.0f, 0.0f); 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1, 1, -1, 1, -1, 1); // Set orthographic projection
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRasterPos2f(-0.85f, -0.05f); // Set text position
+    
+    const char* text2 = "glBlendFunc(GL_ZERO, GL_CONSTANT_COLOR)";
+    
+    for (const char* c = text2; *c; ++c) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c); // Render each character
+    }   
+    // fourth text
+    glColor3f(0.0f, 0.0f, 0.0f); 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1, 1, -1, 1, -1, 1); // Set orthographic projection
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRasterPos2f(0.15f, -0.05f); // Set text position
+    
+    const char* text3 = "glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR)";
+    
+    for (const char* c = text3; *c; ++c) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c); // Render each character
+    }   
+    
     glEnable(GL_BLEND); // Enable blending
+    glBlendEquation(GL_FUNC_ADD);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Set blending function
 
+    // first triangle
+    glViewport(0, 400, 500, 400);
     glBegin(GL_TRIANGLES);
-    glColor4f(1.0f, 0.0f, 0.0f, 0.3f);
-    glVertex2f(0.0, -0.5);  
-    glVertex2f(1.0, -0.5);  
-    glVertex2f(0.5, 0.5);
+    glColor4f(1.0, 0.0, 0.0, 0.3f);
+    glVertex2f(-0.8f, -0.8f);
+    glColor4f(0.0, 1.0, 0.0, 0.3f);
+    glVertex2f(0.0f, 0.8f);
+    glColor4f(0.0, 0.0, 1.0, 0.3f);
+    glVertex2f(0.8f, -0.8f);
+    glEnd();
+
+ 
+    glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+
+    // second triangle
+    glViewport(500, 400, 500, 400);
+    glBegin(GL_TRIANGLES);
+    glColor4f(1.0, 0.0, 0.0,  0.0f);
+    glVertex2f(-0.8f, -0.8f);
+    glColor4f(0.0, 1.0, 0.0,  0.0f);
+    glVertex2f(0.0f, 0.8f);
+    glColor4f(0.0, 0.0, 1.0,  0.0f);
+    glVertex2f(0.8f, -0.8f);
+    glEnd();
+
+    
+    glBlendFunc(GL_ZERO, GL_CONSTANT_COLOR);
+    
+
+    // third triangle
+    glViewport(0, 0, 500, 400);    
+    glBegin(GL_TRIANGLES);
+    glColor4f(1.0, 0.0, 0.0,1.0f);
+    glVertex2f(-0.8f, -0.8f);
+    glColor4f(0.0, 1.0, 0.0,1.0f);
+    glVertex2f(0.0f, 0.8f);
+    glColor4f(0.0, 0.0, 1.0,1.0f);
+    glVertex2f(0.8f, -0.8f);
+    glEnd();
+
+    glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
+
+    // fourth triangle
+    glViewport(500, 0, 500, 400);
+    glBegin(GL_TRIANGLES);
+    glColor4f(1.0, 0.0, 0.0, 1.0f);
+    glVertex2f(-0.8f, -0.8f);
+    glColor4f(0.0, 1.0, 0.0, 1.0f);
+    glVertex2f(0.0f, 0.8f);
+    glColor4f(0.0, 0.0, 1.0, 1.0f);
+    glVertex2f(0.8f, -0.8f);
     glEnd();
 
     glDisable(GL_BLEND); // Disable blending
 
     glFlush(); // Flush the OpenGL pipeline
-    glColor3f(1.0f, 1.0f, 1.0f); // Set text color to white
+    
+    
+    glutSwapBuffers();
+}
+void display2()
+{
+    glClear(GL_COLOR_BUFFER_BIT); // Clear color buffer
+
+    // texts
+    // first text
+    glColor3f(0.0f, 0.0f, 0.0f); 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-1, 1, -1, 1, -1, 1); // Set orthographic projection
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glRasterPos2f(-0.55f, 0.55f); // Set text position
+    glRasterPos2f(-0.85f, 0.92f); // Set text position
     
-    const char* text = "default";
+    const char* text = "glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)";
     
     for (const char* c = text; *c; ++c) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c); // Render each character
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c); // Render each character
     }
-
-    // Render the text
-    glColor3f(1.0f, 1.0f, 1.0f); // Set text color to white
+    // second text
+    glColor3f(0.0f, 0.0f, 0.0f); 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-1, 1, -1, 1, -1, 1); // Set orthographic projection
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glRasterPos2f(0.25f, 0.55f); // Set text position
+    glRasterPos2f(0.15f, 0.92f); // Set text position
     
-    const char* text1 = "made transperent with glBlendFunc()";
+    const char* text1 = "glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR)";
     
     for (const char* c = text1; *c; ++c) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c); // Render each character
-    }
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c); // Render each character
+    }   
+    // third text
+    glColor3f(0.0f, 0.0f, 0.0f); 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1, 1, -1, 1, -1, 1); // Set orthographic projection
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRasterPos2f(-0.85f, -0.05f); // Set text position
+    
+    const char* text2 = "glBlendFunc(GL_ZERO, GL_CONSTANT_COLOR)";
+    
+    for (const char* c = text2; *c; ++c) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c); // Render each character
+    }   
+    // fourth text
+    glColor3f(0.0f, 0.0f, 0.0f); 
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1, 1, -1, 1, -1, 1); // Set orthographic projection
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRasterPos2f(0.15f, -0.05f); // Set text position
+    
+    const char* text3 = "glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR)";
+    
+    for (const char* c = text3; *c; ++c) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c); // Render each character
+    }   
+    
+    glEnable(GL_BLEND); // Enable blending
+    glBlendEquation(GL_FUNC_SUBTRACT);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Set blending function
+
+    // first triangle
+    glViewport(0, 400, 500, 400);
+    glBegin(GL_TRIANGLES);
+    glColor4f(1.0, 0.0, 0.0, 0.3f);
+    glVertex2f(-0.8f, -0.8f);
+    glColor4f(0.0, 1.0, 0.0, 0.3f);
+    glVertex2f(0.0f, 0.8f);
+    glColor4f(0.0, 0.0, 1.0, 0.3f);
+    glVertex2f(0.8f, -0.8f);
+    glEnd();
+
+ 
+    glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR);
+
+    // second triangle
+    glViewport(500, 400, 500, 400);
+    glBegin(GL_TRIANGLES);
+    glColor4f(1.0, 0.0, 0.0,  0.0f);
+    glVertex2f(-0.8f, -0.8f);
+    glColor4f(0.0, 1.0, 0.0,  0.0f);
+    glVertex2f(0.0f, 0.8f);
+    glColor4f(0.0, 0.0, 1.0,  0.0f);
+    glVertex2f(0.8f, -0.8f);
+    glEnd();
+
+    
+    glBlendFunc(GL_ZERO, GL_CONSTANT_COLOR);
+    
+
+    // third triangle
+    glViewport(0, 0, 500, 400);    
+    glBegin(GL_TRIANGLES);
+    glColor4f(1.0, 0.0, 0.0,1.0f);
+    glVertex2f(-0.8f, -0.8f);
+    glColor4f(0.0, 1.0, 0.0,1.0f);
+    glVertex2f(0.0f, 0.8f);
+    glColor4f(0.0, 0.0, 1.0,1.0f);
+    glVertex2f(0.8f, -0.8f);
+    glEnd();
+
+    glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
+
+    // fourth triangle
+    glViewport(500, 0, 500, 400);
+    glBegin(GL_TRIANGLES);
+    glColor4f(1.0, 0.0, 0.0, 1.0f);
+    glVertex2f(-0.8f, -0.8f);
+    glColor4f(0.0, 1.0, 0.0, 1.0f);
+    glVertex2f(0.0f, 0.8f);
+    glColor4f(0.0, 0.0, 1.0, 1.0f);
+    glVertex2f(0.8f, -0.8f);
+    glEnd();
+
+    glDisable(GL_BLEND); // Disable blending
+
+    glFlush(); // Flush the OpenGL pipeline
+    
     
     glutSwapBuffers();
 }
@@ -61,8 +260,12 @@ int main(int argc, char** argv)
     glutInit(&argc, argv); // Initialize GLUT
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB); // Set up display mode
     glutInitWindowSize(1000, 800); // Set the window size
-    glutCreateWindow("Blending Example"); // Create the window
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Set the clear color
+    glutCreateWindow("glBlendEquation(GL_FUNC_SUBTRACT)"); // Create the window
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glutDisplayFunc(display2); // Register display callback function
+    
+    glutCreateWindow("glBlendEquation(GL_FUNC_ADD)"); // Create the window
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glutDisplayFunc(display); // Register display callback function
     glutMainLoop(); // Enter the main loop
     return 0;
