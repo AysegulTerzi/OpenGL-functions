@@ -1,9 +1,10 @@
 //  Frame Bufferlar olmadan, render hedefi belirlememiş oluruz. Bu durumda, çizdiğiniz nesneler doğrudan ekranın varsayılan frame bufferına çizilir. 
 //  Bu, istediğiniz gibi özelleştirilmiş bir görüntüleme ve render işlemi yapmanıza olanak tanımaz.
 //  Frame Bufferlar Off-Screen Render (ekrana çizmeden önce render işlemleri) yapmamızı sağlar. 
+
 //  glBindFramebuffer fonksiyonu, framebufferId isimli framebuffer nesnesini bağlamak için kullanılır
-//  glBindFramebuffer(GL_FRAMEBUFFER, 0) kullanılarak framebuffer çözülür
 //  glGenFramebuffers fonksiyonu framebuffer ID'sini oluşturmak için kullanılır 
+//  glBindFramebuffer(GL_FRAMEBUFFER, 0) kullanılarak framebuffer çözülür
 //  glDeleteFramebuffers framebuffer kaynaklarını artık gerekmediğinde temizlemek için kullanılır.
 
 #include <GL/glut.h>
@@ -19,33 +20,34 @@ void display() {
     // Generate the framebuffer
     glGenFramebuffers(1, &framebufferId);
 
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Draw the triangle
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex2f(-0.5f, -0.5f);
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glVertex2f(0.5f, -0.5f);
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glVertex2f(0.0f, 0.5f);
-    glEnd();
+    glRasterPos2f(-0.25f, -0.0f);
+    std::string text1 = "This is first Frame Buffer";
+    for (char c : text1) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+    }
+    glRasterPos2f(-0.35f, -0.10f);
+    std::string text2 = "(After 3 seconds, it's gonna be deleted)";
+    for (char c : text2) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
+    }
     
     glFlush();
 
     // Wait for 3 seconds
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 
     // Unbind the framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    // Clear the screen and draw text using standard OpenGL functions   
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glRasterPos2f(-0.15f, 0.0f);
-    std::string text = "Hello, World!";
+    glRasterPos2f(-0.25f, 0.0f);
+    std::string text = "This is second Frame Buffer";
     for (char c : text) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c);
     }
@@ -66,3 +68,6 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+
+
+// Written by Ayşegül Terzi - visit https://github.com/AysegulTerzi/openGL-functions for more
