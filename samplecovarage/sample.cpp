@@ -4,8 +4,6 @@ void display() {
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glDisable(GL_MULTISAMPLE);
-
     // Draw a triangle
     glBegin(GL_TRIANGLES);
     glColor3f(1.0, 0.0, 0.0);
