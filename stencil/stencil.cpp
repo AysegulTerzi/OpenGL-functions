@@ -93,7 +93,7 @@ void display() {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c); // Render each character
     }
     
-    
+    glDisable(GL_STENCIL_TEST);
     glutSwapBuffers();
 }
 
