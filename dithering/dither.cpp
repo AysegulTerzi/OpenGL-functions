@@ -1,79 +1,82 @@
-#include <GL/glut.h> // Include the GLUT header file
+#include <iostream>
+#include <GL/glut.h>
+#include <vector>
 
-void display()
-{
-    glClear(GL_COLOR_BUFFER_BIT); // Clear color buffer
+std::vector<std::string> palette = {
+    "#000000", "#111111", "#222222", "#333333",
+    "#444444", "#555555", "#666666", "#777777",
+    "#888888", "#999999", "#AAAAAA", "#BBBBBB",
+    "#CCCCCC", "#DDDDDD", "#EEEEEE", "#FFFFFF"
+};
 
-    // Draw the first rectangle
-    glBegin(GL_QUADS);
-    glColor3f(0.0f, 0.0f, 1.0f);// Red color for corner 1
-    glVertex2f(-0.8f, -0.4f);
-    glColor3f(1.0f, 0.0f, 0.0f); // Green color for corner 2
-    glVertex2f(-0.2f, -0.4f);
-    glColor3f(1.0f, 1.0f, 0.0f);  // Blue color for corner 3
-    glVertex2f(-0.2f, 0.6f);
-    glColor3f(0.0f, 1.0f, 0.0f); // Yellow color for corner 4
-    glVertex2f(-0.8f, 0.6f);
-    glEnd();
-    
-     // Render the text
-    glColor3f(1.0f, 1.0f, 1.0f); // Set text color to white
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1, 1, -1, 1, -1, 1); // Set orthographic projection
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glRasterPos2f(-0.55f, 0.7f); // Set text position
-    
-    const char* text = "default";
-    
-    for (const char* c = text; *c; ++c) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c); // Render each character
+void displayWithoutDither() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    int xStep = glutGet(GLUT_WINDOW_WIDTH) / 8;
+    int yStep = glutGet(GLUT_WINDOW_HEIGHT) / 8;
+
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            glColor3f((float)(x * 2 + y * 2) / 30.0f, (float)(x * 2 + y * 2) / 30.0f, (float)(x * 2 + y * 2) / 30.0f);
+            glBegin(GL_QUADS);
+            glVertex2f(x * xStep, y * yStep);
+            glVertex2f((x + 1) * xStep, y * yStep);
+            glVertex2f((x + 1) * xStep, (y + 1) * yStep);
+            glVertex2f(x * xStep, (y + 1) * yStep);
+            glEnd();
+        }
     }
 
-    glEnable(GL_DITHER);
-
-    // Draw the second rectangle
-    glBegin(GL_QUADS);
-    glColor3f(0.0f, 0.0f, 1.0f); // Blue color for corner 1
-    glVertex2f(0.2f, -0.4f);
-    glColor3f(1.0f, 0.0f, 0.0f); // Red color for corner 2
-    glVertex2f(0.8f, -0.4F);
-    glColor3f(1.0f, 1.0f, 0.0f); // Yellow color for corner 3
-    glVertex2f(0.8f, 0.6f);
-    glColor3f(0.0f, 1.0f, 0.0f); // Green color for corner 4
-    glVertex2f(0.2f, 0.6f);
-    glEnd();
-
-
-    // Render the text
-    glColor3f(1.0f, 1.0f, 1.0f); // Set text color to white
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1, 1, -1, 1, -1, 1); // Set orthographic projection
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glRasterPos2f(0.27f, 0.7f); // Set text position
-    
-    const char* text1 = "with enabling GL_DITHER";
-    
-    for (const char* c = text1; *c; ++c) {
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c); // Render each character
-    }
-
-    glDisable(GL_DITHER);
-
-    glFlush(); // Flush the OpenGL pipeline
+    glFlush();
 }
 
-int main(int argc, char** argv)
-{
-    glutInit(&argc, argv); // Initialize GLUT
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB); // Set up display mode
-    glutInitWindowSize(1000, 800); // Set the window size
-    glutCreateWindow("Rectangles with Different Corner Colors"); // Create the window
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Set the clear color to white
-    glutDisplayFunc(display); // Register display callback function
-    glutMainLoop(); // Enter the main loop
+void displayWithDither() {
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    int xStep = glutGet(GLUT_WINDOW_WIDTH) / 8;
+    int yStep = glutGet(GLUT_WINDOW_HEIGHT) / 8;
+
+    glEnable(GL_DITHER); // Dithering'i etkinleştir
+
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            glColor3f((float)(x * 2 + y * 2) / 30.0f, (float)(x * 2 + y * 2) / 30.0f, (float)(x * 2 + y * 2) / 30.0f);
+            glBegin(GL_QUADS);
+            glVertex2f(x * xStep, y * yStep);
+            glVertex2f((x + 1) * xStep, y * yStep);
+            glVertex2f((x + 1) * xStep, (y + 1) * yStep);
+            glVertex2f(x * xStep, (y + 1) * yStep);
+            glEnd();
+        }
+    }
+
+    glDisable(GL_DITHER); // Dithering'i devre dışı bırak
+
+    glFlush();
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(800, 600);
+
+    // İlk pencere
+    glutCreateWindow("Without Dither");
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, 800, 0, 600, -1, 1);
+    glutDisplayFunc(displayWithoutDither);
+
+    // İkinci pencere
+    glutCreateWindow("With Dither");
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, 800, 0, 600, -1, 1);
+    glutDisplayFunc(displayWithDither);
+
+    glutMainLoop();
+
     return 0;
 }
