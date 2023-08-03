@@ -71,7 +71,14 @@ void display()
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
     printf("-------------------------------------------------------\n");
 
+
     std::cout << "Maximum Texture Size: " << maxTextureSize << std::endl;
+    printf("-------------------------------------------------------\n");
+
+    GLfloat currentColor[4];
+    glGetFloatv(GL_CURRENT_COLOR, currentColor);
+
+    std::cout << "Current color: (" << currentColor[0] << ", " << currentColor[1] << ", " << currentColor[2] << ", " << currentColor[3] << ")" << std::endl;
     printf("-------------------------------------------------------\n");
 
     const GLubyte* vendor = glGetString(GL_VENDOR);
