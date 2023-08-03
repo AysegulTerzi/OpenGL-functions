@@ -279,3 +279,8 @@ int main(int argc, char** argv)
     glutMainLoop(); // Enter the main loop
     return 0;
 }
+
+
+
+
+// Written by Ayşegül Terzi - visit https://github.com/AysegulTerzi/openGL-functions for more

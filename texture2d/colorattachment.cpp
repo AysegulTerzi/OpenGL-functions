@@ -197,3 +197,7 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+
+
+
+// Written by Ayşegül Terzi - visit https://github.com/AysegulTerzi/openGL-functions for more

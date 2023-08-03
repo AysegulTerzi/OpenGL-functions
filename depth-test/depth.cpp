@@ -169,3 +169,8 @@ int main(int argc, char** argv)
     glutMainLoop(); // Ana döngüye girer
     return 0;
 }
+
+
+
+
+// Written by Ayşegül Terzi - visit https://github.com/AysegulTerzi/openGL-functions for more
