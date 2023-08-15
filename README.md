@@ -25,5 +25,5 @@ cd depthMask
 #### In this repository, apart from opengl, the glut library has been used frequently as a windowing system.
 
 ##### If you have any question, I'll be happy to help. 
-* @terziaysegul9696@gmail.com
+* terziaysegul9696@gmail.com
 * https://www.linkedin.com/in/aysegul-terzi/
