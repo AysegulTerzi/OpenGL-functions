@@ -6,15 +6,11 @@
 //  glGenFramebuffers fonksiyonu framebuffer ID'sini oluşturmak için kullanılır 
 //  glBindFramebuffer(GL_FRAMEBUFFER, 0) kullanılarak framebuffer çözülür
 //  glDeleteFramebuffers framebuffer kaynaklarını artık gerekmediğinde temizlemek için kullanılır.
-#define OPENGL 0
 
 #include <GL/glut.h>
 #include <GLES2/gl2.h>
 #include <chrono>
 #include <thread>
-
-
-#if OPENGL 
 
 GLuint framebufferId;
 
@@ -73,10 +69,5 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-#else
-
-
-
-#endif
 
 // Written by Ayşegül Terzi - visit https://github.com/AysegulTerzi/openGL-functions for more
