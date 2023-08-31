@@ -41,16 +41,22 @@ void display() {
         std::cout << "Buffer is not valid!" << std::endl;
     }
 
-    glEnableClientState(GL_VERTEX_ARRAY);
+    glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glVertexPointer(3, GL_FLOAT, 0, 0);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glColor3f(1.0f, 0.0f, 0.0f);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glEnableVertexAttribArray(0); // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableVertexAttribArray(0);
 
-    glFlush();
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDeleteBuffers(1, &vertexBuffer);
+
+    glutSwapBuffers();
 }
 
 int main(int argc, char** argv) {
@@ -61,7 +67,7 @@ int main(int argc, char** argv) {
 
     glutDisplayFunc(display);
 
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-1, 1, -1, 1, -1, 1);

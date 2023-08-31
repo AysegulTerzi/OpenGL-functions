@@ -1,5 +1,11 @@
+#include "../fonts/mainfonts.h"
+
+#define OPENGL 0
+
+#include <GLES2/gl2.h>
 #include <GL/glut.h> // Include the GLUT header file
 
+#if OPENGL 
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT); // Clear color buffer
@@ -123,6 +129,154 @@ int main(int argc, char** argv)
     return 0;
 }
 
+#else // OPENGL ES 2.0
 
+#include <GL/glut.h>
+#include <iostream>
+
+const char* vertexShaderSource = R"(
+attribute vec4 aPos;
+
+void main()
+{
+    gl_Position = aPos;
+}
+)";
+
+const char* fragmentShaderSource = R"(
+uniform vec4 uColor;
+
+void main()
+{
+    gl_FragColor = uColor;
+}
+)";
+
+
+GLuint vertexBuffer;
+GLuint shaderProgram;
+
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    // Compile and link shaders
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    // Set up vertex buffer
+    GLfloat vertices[] = {
+        -0.7f, -0.7f,
+         0.0f,  0.7f,
+         0.7f, -0.7f
+    };
+
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Use shader program
+    glUseProgram(shaderProgram);
+
+    // Bind vertex buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+
+
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glViewport(0, 400, 500, 400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 1.0f, 1.0f, 1.0f,0.0f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    
+    glColorMask(GL_FALSE, GL_FALSE, GL_TRUE, GL_TRUE);
+    glViewport(500, 400, 500, 400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 1.0f, 1.0f, 1.0f,0.0f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glColorMask(GL_FALSE, GL_TRUE, GL_FALSE, GL_TRUE);
+    glViewport(0, 0, 500, 400); 
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 1.0f, 1.0f, 1.0f,0.0f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glColorMask(GL_TRUE,GL_FALSE, GL_FALSE,  GL_TRUE);
+    glViewport(500, 0, 500, 400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 1.0f, 1.0f, 1.0f,0.0f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+   
+    //texts
+    glColorMask(GL_TRUE,GL_TRUE, GL_TRUE,  GL_TRUE);
+
+    glViewport(100, 650, 50, 200);
+    vprint(0.0f, 0.0f, 4, "glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);");
+    
+    glViewport(500, 650, 200, 200);
+    vprint(0.0f, 0.0f, 4, "glColorMask(GL_FALSE, GL_FALSE, GL_TRUE, GL_TRUE);");
+    
+    glViewport(600, 250, 50, 200);
+    vprint(0.0f, 0.0f, 4, "glColorMask(GL_FALSE, GL_TRUE, GL_FALSE, GL_TRUE);");
+    
+    glViewport(100, 250, 50, 200);
+    vprint(0.0f, 0.0f, 4, "glColorMask(GL_TRUE,GL_FALSE, GL_FALSE,  GL_TRUE);");
+    glDisableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glutSwapBuffers();
+}
+
+void compile(){
+      // Compile and link shaders
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    // Set up vertex buffer
+    GLfloat vertices[] = {
+        -0.8f, -0.8f,
+         0.0f,  0.8f,
+         0.8f, -0.8f
+    };
+
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+    glutInitWindowSize(1000, 800);
+    glutCreateWindow("colorMask Example");
+    compile();
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glutDisplayFunc(display);
+    glutMainLoop();
+
+    return 0;
+}
+
+
+#endif
 
 // Written by Ayşegül Terzi - visit https://github.com/AysegulTerzi/openGL-functions for more

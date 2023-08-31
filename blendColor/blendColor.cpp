@@ -1,3 +1,5 @@
+#include "../fonts/mainfonts.h"
+
 #define OPENGL 0
 
 #include <GLES2/gl2.h>
@@ -152,7 +154,11 @@ void display() {
 
     glDisable(GL_BLEND);
     glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
+
+    vprint(-0.70f, 0.4f, 5, "default;");
+    vprint(-0.3f, 0.4f, 5, "glBlendColor(1.0f, 1.0f, 0.0f, 0.2f);");
+    vprint(0.4f, 0.4f, 5, "glBlendColor(1.0f, 0.0f, 1.0f, 0.2f);");
+
 
     glutSwapBuffers();
     glBindBuffer(GL_ARRAY_BUFFER, 0);

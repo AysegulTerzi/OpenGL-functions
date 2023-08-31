@@ -149,7 +149,9 @@ int main(int argc, char** argv) {
     glGenTextures(1, &framebufferTextureId);
     glBindTexture(GL_TEXTURE_2D, framebufferTextureId);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1000, 800, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, framebufferTextureId, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 , GL_TEXTURE_2D, framebufferTextureId, 0);
+    // glFramebufferTexture2D(GL_FRAMEBUFFER,  GL_DEPTH_ATTACHMENT , GL_TEXTURE_2D, framebufferTextureId, 0);
+    // glFramebufferTexture2D(GL_FRAMEBUFFER,  GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, framebufferTextureId, 0);
 
     // Framebuffer check
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);

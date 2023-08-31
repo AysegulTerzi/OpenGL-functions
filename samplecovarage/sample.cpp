@@ -1,5 +1,11 @@
+#include "../fonts/mainfonts.h"
+
+#define OPENGL 0
+
+#include <GLES2/gl2.h>
 #include <GL/glut.h>
 
+#if OPENGL
 void display() {
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -77,7 +83,114 @@ int main(int argc, char** argv) {
     return 0;
 }
 
+#else  // OPENGL ES 2.0
 
+const char* vertexShaderSource = R"(
+attribute vec4 aPos;
+
+void main()
+{
+    gl_Position = aPos;
+}
+)";
+
+const char* fragmentShaderSource = R"(
+uniform vec3 uColor;
+
+void main()
+{
+    gl_FragColor = vec4(uColor, 0.3);
+}
+)";
+
+GLuint shaderProgram;
+GLuint vertexBuffer;
+
+void display()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
+    glCompileShader(vertexShader);
+
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
+    glCompileShader(fragmentShader);
+
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    GLfloat vertices[] = {
+        -1.0, -0.5, 0.0f,
+         0.0, -0.5, -0.5f,
+         -0.5, 0.5, 0.0f,
+
+         0.0, -0.5, 0.0f,
+         1.0, -0.5, -0.5f,
+         0.5, 0.5, 0.0f
+    };
+    
+
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glUseProgram(shaderProgram);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+
+    glUniform3f(glGetUniformLocation(shaderProgram, "uColor"), 0.0f, 0.0f, 1.0f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glEnable(GL_MULTISAMPLE);
+
+    glUniform3f(glGetUniformLocation(shaderProgram, "uColor"), 0.0f, 0.0f, 1.0f);
+    glSampleCoverage(0.5 ,GL_TRUE);
+
+    glDrawArrays(GL_TRIANGLES, 3, 3);
+    
+    glDisable(GL_MULTISAMPLE);
+
+    // texts 
+    glUniform3f(glGetUniformLocation(shaderProgram, "uColor"), 1.0f, 1.0f, 1.0f);
+
+    glViewport(160,570,100,100);
+    vprint(0.5f, 0.5f, 7, "default");
+    
+    glViewport(500,570,100,100);
+    vprint(0.5f, 0.5f, 7, "glSampleCoverage(0.5 ,GL_TRUE);");
+
+    glDisableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glUseProgram(0);
+    glDeleteBuffers(1, &vertexBuffer);
+    glDeleteProgram(shaderProgram);
+
+    glutSwapBuffers();
+}
+    int main(int argc, char** argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE); // Enable multisampling
+    glutInitWindowSize(1000, 800);
+
+    glutCreateWindow("sample covarage");
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glutDisplayFunc(display);
+    glutMainLoop();
+
+    return 0;
+}
+
+    
+
+#endif
 
 
 // Written by Ayşegül Terzi - visit https://github.com/AysegulTerzi/openGL-functions for more

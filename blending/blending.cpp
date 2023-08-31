@@ -6,12 +6,15 @@
 
 //  glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_COLOR) //  glBlendFunc(GL_ZERO, GL_CONSTANT_COLOR)  //  glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR)
 
+#include "../fonts/mainfonts.h"
 
+#define OPENGL 0
+#include "../fonts/mainfonts.h"
 
 #include <GL/glut.h> // Include the GLUT header file
 #include <GLES2/gl2.h>
 
-
+#if OPENGL
 void display()
 {
     glClear(GL_COLOR_BUFFER_BIT); // Clear color buffer
@@ -280,7 +283,180 @@ int main(int argc, char** argv)
     return 0;
 }
 
+#else // OPENGL ES 2.0 
 
+const char* vertexShaderSource = R"(
+attribute vec4 aPos;
+
+void main()
+{
+    gl_Position = aPos;
+}
+)";
+
+const char* fragmentShaderSource = R"(
+uniform vec4 uColor;
+
+void main()
+{
+    gl_FragColor = uColor;
+}
+)";
+
+
+GLuint vertexBuffer;
+GLuint shaderProgram;
+
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    // Compile and link shaders
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    // Set up vertex buffer
+    GLfloat vertices[] = {
+        -0.5f, -0.5f,
+         0.0f,  0.5f,
+         0.5f, -0.5f
+
+    };
+
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Use shader program
+    glUseProgram(shaderProgram);
+
+    // Bind vertex buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glEnable(GL_BLEND); // Enable blending
+    glBlendEquation(GL_FUNC_ADD);
+
+
+    // texts 
+    glViewport(50, 450, 100, 540);
+    vprint(0.0, 0.0, 4, "default");
+
+    glViewport(180, 450, 100, 540);
+    vprint(0.0, 0.0, 4, "GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA");
+
+    glViewport(0, 50, 100, 540);
+    vprint(0.0, 0.0, 4, "GL_ZERO, GL_CONSTANT_COLOR");
+
+    glViewport(180, 30, 100, 540);
+    vprint(0.0, 0.0, 4, "GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR");
+
+    //
+    
+    glViewport(550, 450, 100, 540);
+    vprint(0.0, 0.0, 4, "default");
+
+    glViewport(650, 450, 100, 540);
+    vprint(0.0, 0.0, 4, "GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA");
+    
+    glViewport(450, 50, 100, 540);
+    vprint(0.0, 0.0, 4, "GL_ZERO, GL_CONSTANT_COLOR");
+
+    glViewport(650, 30, 100, 540);
+    vprint(0.0, 0.0, 4, "GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR");
+
+
+    // texts end
+
+    glViewport(0, 400, 250, 400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 0.0f, 0.0f, 1.0f,0.3f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glViewport(250, 400, 250, 400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 0.0f, 0.0f, 1.0f,0.3f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glBlendFunc(GL_ZERO, GL_CONSTANT_COLOR);
+
+    glViewport(0, 0, 250, 400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 0.0f, 0.0f, 1.0f,0.3f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
+
+    glViewport(250, 0, 250, 400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 0.0f, 0.0f, 1.0f,0.3f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    ///////////////////////////////////////////////
+    
+    glEnable(GL_BLEND); // Enable blending
+    glBlendEquation(GL_FUNC_SUBTRACT);
+
+    glViewport(500, 400, 250, 400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 0.0f, 0.0f, 1.0f,0.3f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    
+    glFlush();
+    
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glViewport(750, 400, 250,400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 0.0f, 0.0f, 1.0f,0.3f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glBlendFunc(GL_ZERO, GL_CONSTANT_COLOR);
+
+    glViewport(500, 0, 250, 400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 0.0f, 0.0f, 1.0f,0.3f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glBlendFunc(GL_SRC_COLOR, GL_ONE_MINUS_SRC_COLOR);
+
+    glViewport(750, 0, 250, 400);
+    glUniform4f(glGetUniformLocation(shaderProgram, "uColor"), 0.0f, 0.0f, 1.0f,0.3f);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glDisableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glDisable(GL_BLEND); // Disable blending
+
+    glFlush(); // Flush the OpenGL pipeline
+    glutSwapBuffers();
+}
+
+void compile(){
+     
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
+    glutInitWindowSize(1000, 800);
+    glutCreateWindow("blending Example");
+    compile();
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glutDisplayFunc(display);
+    glutMainLoop();
+
+    return 0;
+}
+
+
+
+#endif
 
 
 // Written by Ayşegül Terzi - visit https://github.com/AysegulTerzi/openGL-functions for more

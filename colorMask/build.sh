@@ -3,6 +3,6 @@
 CC=g++
 CPPFLAGS="-I../Include"
 LDFLAGS=`pkg-config --libs glew`
-LDFLAGS="$LDFLAGS -lglut"
+LDFLAGS="$LDFLAGS -lglut -lGLEW -lGL"
 
-$CC colormask.cpp ../sources/util.cpp $CPPFLAGS $LDFLAGS -o colormask
+$CC colormask.cpp ../fonts/mainfonts.cpp $CPPFLAGS $LDFLAGS -o colormask

@@ -5,4 +5,4 @@ CPPFLAGS="-I../Include"
 LDFLAGS=`pkg-config --libs glew`
 LDFLAGS="$LDFLAGS -lglut -lGLEW -lGL"
 
-$CC blendColor.cpp ../sources/util.cpp $CPPFLAGS $LDFLAGS -o blendColor
+$CC blendColor.cpp ../fonts/mainfonts.cpp  $CPPFLAGS $LDFLAGS -o blendColor

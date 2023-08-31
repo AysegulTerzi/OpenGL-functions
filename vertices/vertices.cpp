@@ -1,5 +1,7 @@
+#include "../fonts/mainfonts.h"
+
+#include <GLES2/gl2.h>
 #include <stdio.h>
-#include <GL/glew.h>
 #include <GL/glut.h>
 
 GLuint vertexArray;
@@ -38,13 +40,7 @@ int main(int argc, char** argv)
     glutInitWindowSize(1000, 800);
     glutCreateWindow("vertices");
 
-    // Must be done after glut is initialized!
-    GLenum res = glewInit();
-    if (res != GLEW_OK) {
-        fprintf(stderr, "Error: '%s'\n", glewGetErrorString(res));
-        return 1;
-    }
-
+ 
     glClearColor(0.0, 0.0, 0.0, 0.0);
 
     glutDisplayFunc(RenderSceneCB);

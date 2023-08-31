@@ -3,6 +3,6 @@
 CC=g++
 CPPFLAGS="-I../Include"
 LDFLAGS=`pkg-config --libs glew`
-LDFLAGS="$LDFLAGS -lglut"
+LDFLAGS="$LDFLAGS -lglut -lGLEW -lGL"
 
-$CC scissor.cpp ../sources/util.cpp $CPPFLAGS $LDFLAGS -o scissor
+$CC scissor.cpp ../fonts/mainfonts.cpp $CPPFLAGS $LDFLAGS -o scissor

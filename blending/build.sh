@@ -2,7 +2,6 @@
 
 CC=g++
 CPPFLAGS="-I../Include"
-LDFLAGS=`pkg-config --libs glew`
-LDFLAGS="$LDFLAGS -lglut -lGLEW -lGL"
+LDFLAGS="$LDFLAGS -lglut  -lGL"
 
-$CC blending.cpp ../sources/util.cpp $CPPFLAGS $LDFLAGS -o blending
+$CC blending.cpp ../fonts/mainfonts.cpp $CPPFLAGS $LDFLAGS -o blending

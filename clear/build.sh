@@ -2,7 +2,7 @@
 
 CC=g++
 CPPFLAGS="-I../Include"
-LDFLAGS=`pkg-config --libs glew freetype2 glfw3`
-LDFLAGS="$LDFLAGS -lglut"
+LDFLAGS=`pkg-config --libs glew `
+LDFLAGS="$LDFLAGS -lglut -lGLEW -lGL"
 
-$CC clear.cpp ../sources/util.cpp $CPPFLAGS $LDFLAGS -o clear
+$CC clear.cpp ../fonts/mainfonts.cpp $CPPFLAGS $LDFLAGS -o clear

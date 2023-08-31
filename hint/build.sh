@@ -3,6 +3,6 @@
 CC=g++
 CPPFLAGS="-I../Include"
 LDFLAGS=`pkg-config --libs glew`
-LDFLAGS="$LDFLAGS -lglut"
+LDFLAGS="$LDFLAGS -lglut -lGLEW -lGL"
 
-$CC hint.cpp ../sources/util.cpp $CPPFLAGS $LDFLAGS -o hint
+$CC hint.cpp ../fonts/mainfonts.cpp $CPPFLAGS $LDFLAGS -o hint
