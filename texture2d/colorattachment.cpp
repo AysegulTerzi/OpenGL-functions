@@ -1,7 +1,7 @@
 #include <GL/glut.h>
 #include <GLES2/gl2.h>
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "sources/stb_image.h"
 #include <stdio.h>
 #include <iostream>
 
