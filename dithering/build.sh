@@ -5,4 +5,4 @@ CPPFLAGS="-I../Include"
 LDFLAGS=`pkg-config --libs glew`
 LDFLAGS="$LDFLAGS -lglut"
 
-$CC dither.cpp ../sources/util.cpp $CPPFLAGS $LDFLAGS -o dither
+$CC dither.cpp  $CPPFLAGS $LDFLAGS -o dither

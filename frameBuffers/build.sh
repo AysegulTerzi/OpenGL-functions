@@ -5,4 +5,4 @@ CPPFLAGS="-I../Include"
 LDFLAGS=`pkg-config --libs glew freetype2 glfw3`
 LDFLAGS="$LDFLAGS -lglut -lfreetype"
 
-$CC bindframe.cpp ../sources/util.cpp $CPPFLAGS $LDFLAGS -o bindframe
+$CC bindframe.cpp $CPPFLAGS $LDFLAGS -o bindframe
