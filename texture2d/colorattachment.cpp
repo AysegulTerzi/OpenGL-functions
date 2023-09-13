@@ -1,9 +1,9 @@
 #include <GL/glut.h>
 #include <GLES2/gl2.h>
 #define STB_IMAGE_IMPLEMENTATION
-#include "sources/stb_image.h"
 #include <stdio.h>
 #include <iostream>
+#include "stb_image.h"
 
 GLuint textureId; // Texture ID
 int imageWidth, imageHeight, numChannels;
